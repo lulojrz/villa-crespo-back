@@ -1,0 +1,46 @@
+package com.villacrespo.back.model;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "departamentos")
+@Getter
+@Setter
+public class Departamento {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String piso;
+    private String letra;
+    private String estado;
+    private Boolean tocar;
+
+    @Column(columnDefinition = "TEXT")
+    private String observaciones;
+
+    @Column(columnDefinition = "TEXT")
+    private String historial;
+
+    @ManyToOne
+    @JoinColumn(name = "publicador_id")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Usuario publicador;
+
+    @Column(name = "publicador_id", insertable = false, updatable = false)
+    private Long idPublicador;
+
+    @Column(name = "ultima_fecha_trabajada")
+    private LocalDateTime ultimaFechaTrabajada;
+
+    @ManyToOne
+    @JoinColumn(name = "edificio_id")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Edificio edificio;
+}
