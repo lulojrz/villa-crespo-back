@@ -64,7 +64,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
                         // Rutas públicas de autenticación
-                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/auth/**", "/usuarios/**").permitAll()
 
                         // Rutas exclusivas por rol (ajusta según los roles de tu proyecto)
                         .requestMatchers("/admin/**").hasRole("ADMIN")
