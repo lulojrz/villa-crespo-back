@@ -25,11 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         Usuario u = usuarioRepo.findByUsuarioIgnoreCase(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
 
-        String rol = u.getPrivilegio() != null ? u.getPrivilegio().trim() : "ROLE_PUB";
-        if (!rol.startsWith("ROLE_")) {
-            rol = "ROLE_" + rol;
-        }
-
+        String rol = normalizarRol(u.getPrivilegio());
         boolean habilitado = Boolean.TRUE.equals(u.getActivo());
 
         return new User(
@@ -39,7 +35,23 @@ public class CustomUserDetailsService implements UserDetailsService {
                 true,
                 true,
                 true,
-                List.of(new SimpleGrantedAuthority(rol))
+                List.of(new SimpleGrantedAuthority("ROLE_" + rol))
         );
+    }
+
+    private String normalizarRol(String privilegio) {
+        if (privilegio == null || privilegio.isBlank()) {
+            return "PUBLICADOR";
+        }
+        String limpio = privilegio.trim().toUpperCase();
+        if (limpio.startsWith("ROLE_")) {
+            limpio = limpio.substring(5);
+        }
+        return switch (limpio) {
+            case "ANC", "ANCIANO" -> "ANCIANO";
+            case "SM", "SIERVO_MINISTERIAL" -> "SIERVO_MINISTERIAL";
+            case "PR", "PRECURSOR_REGULAR" -> "PRECURSOR_REGULAR";
+            default -> "PUBLICADOR";
+        };
     }
 }

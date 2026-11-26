@@ -29,7 +29,7 @@ public class DataSeeder implements CommandLineRunner {
             admin.setApellido("Villa Crespo");
             admin.setGrupoServicio(1);
             admin.setNumeroTelefono("1100000000");
-            admin.setPrivilegio("ROLE_ANC");
+            admin.setPrivilegio("ANCIANO");
             admin.setAsignacion("Soporte");
             admin.setAptoPredicacionPublica(true);
             admin.setTieneCarrito(true);
@@ -43,8 +43,8 @@ public class DataSeeder implements CommandLineRunner {
         List<Usuario> usuarios = usuarioRepository.findAll();
         for (Usuario u : usuarios) {
             if (u.getAsignacion() != null && u.getAsignacion().toLowerCase().contains("soporte")) {
-                if (!"ROLE_ANC".equalsIgnoreCase(u.getPrivilegio())) {
-                    u.setPrivilegio("ROLE_ANC");
+                if (!"ANCIANO".equalsIgnoreCase(u.getPrivilegio())) {
+                    u.setPrivilegio("ANCIANO");
                     usuarioRepository.save(u);
                 }
             }

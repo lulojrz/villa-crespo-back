@@ -67,7 +67,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**", "/usuarios/**").permitAll()
 
                         // Rutas exclusivas por rol (ajusta según los roles de tu proyecto)
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/admin/**").hasAnyRole("ANCIANO","SIERVO_MINISTERIAL")
 
                         // Cualquier otra ruta requiere estar autenticado con JWT válido
                         .anyRequest().authenticated()
